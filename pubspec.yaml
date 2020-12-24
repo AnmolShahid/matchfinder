@@ -1,0 +1,35 @@
+name: matchfinder
+description: A new Flutter application.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.0
+  dio: ^3.0.10
+  dropdown_search: ^0.4.8
+  dio_cookie_manager: ^1.0.0
+  dio_http_cache: ^0.2.7
+  percent_indicator: ^2.1.8
+  image_picker_gallery_camera: ^0.1.6
+  image_cropper: ^1.3.1
+  flutter_native_image: ^0.0.5+3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/
