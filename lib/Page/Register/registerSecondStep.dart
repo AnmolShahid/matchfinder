@@ -105,7 +105,8 @@ class _RegisterSecondState extends State<RegisterSecond> {
       List<DropdownMenuItem<String>> items = new List();
       for (int i = 0; i < value.length; i++) {
         setState(() {
-          items.insert(
+          if(value[i][2]=="N"){
+               items.insert(
             0,
             DropdownMenuItem(
               child: Text(
@@ -114,8 +115,24 @@ class _RegisterSecondState extends State<RegisterSecond> {
               value: value[i][0],
             ),
           );
-        });
+      
+          }else{
+               items.insert(
+            0,
+            DropdownMenuItem(
+              child: Text(
+                value[i][1],
+                style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+              ),
+              value: value[i][0],
+             
+            ),
+          );
+      
+          }
+         });
       }
+     
       return items;
     } else {
       return null;
@@ -411,10 +428,17 @@ class _RegisterSecondState extends State<RegisterSecond> {
                               value: highestEducation,
                               items: highestEducationDropDown,
                               onChanged: (value) {
-                                setState(() {
-                                  highestEducation = value.toString();
-                                  isHighestEducation = false;
-                                });
+                                if(value=="EN"||value=="MD"||value=="UG"||value=="PG"||value=="DC"||value=="US"||value=="OT"){
+
+                                  }else{
+                                     setState(() {
+                                        highestEducation = value.toString();
+                                        isHighestEducation = false;
+
+                                       });
+                                
+                                  }
+                               
                               },
                             ),
                             TextFieldCustom(
@@ -695,6 +719,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                                             maxLines: 2,
                                                             textAlign: TextAlign
                                                                 .center,
+
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
@@ -709,6 +734,8 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                                 Positioned(
                                                   top: 0,
                                                   right: 0,
+                                                  bottom: 50,
+                                                  left: 65,
                                                   child: InkWell(
                                                     onTap: () {
                                                       print('Reach');
@@ -728,7 +755,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                                       width: 30,
                                                       child: Icon(
                                                         Icons.clear,
-                                                        size: 20,
+                                                        size: 15,
                                                       ),
                                                     ),
                                                   ),
