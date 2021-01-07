@@ -37,9 +37,9 @@ class _RegisterState extends State<Register> {
   bool isReligion = true;
   bool isChurch = false;
   bool isPhone = true;
-  bool isRelationShip = true;
+  bool isRelationShip = false;
   bool isCity = true;
-  bool isCountry = true;
+  bool isCountry = false;
   bool isCast = true;
   bool isDisplay = false;
   bool isLoading = false;
@@ -813,7 +813,19 @@ class _RegisterState extends State<Register> {
                               ),
                               MaterialButton(
                                 onPressed: () {
-                                  register();
+                                 register();
+                                  print(name.text);
+       print( gender,);
+         print( day,);
+          print( month,);
+          print( year,);
+          print( motherTongue,);
+        print(   religion,);
+        print(   cast,);
+       print(    country,);
+         print(  relationShip,);
+        print(   countryISD,);
+       print( phone);
                                 },
                                 color: appColor,
                                 child: Row(
@@ -978,6 +990,7 @@ class _RegisterState extends State<Register> {
         isLoading = true;
         isDisplay = false;
       });
+    
       Response response = await signUp(
         email: email.text.trim(),
         password: password.text.trim(),

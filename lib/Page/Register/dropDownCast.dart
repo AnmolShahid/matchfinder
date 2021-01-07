@@ -151,7 +151,11 @@ class _DropDownCastState extends State<DropDownCast> {
                   },
                 ),
               ),
-              isLoading ? CircularProgressIndicator() : Container(),
+              isLoading ? Container(child: Column(children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 50,),
+                Text('Please Wait'),
+              ],),) : Container(),
               castString.isNotEmpty
                   ? ListView.builder(
                 shrinkWrap: true,

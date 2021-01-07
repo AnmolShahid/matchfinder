@@ -42,6 +42,25 @@ void changeScreenReplacementUtils(BuildContext context, Widget widget) {
       (route) => false);
 }
 
+roundCirclePresent(String text, Color color, TextStyle textStyle) {
+  return Container(
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: color,
+    ),
+    padding: EdgeInsets.all(
+      10,
+    ),
+    child: Container(
+      child: Text(
+        text,
+        style: textStyle,
+      ),
+    ),
+  );
+}
+
 roundCircle(String text, Color color, TextStyle textStyle) {
   return Container(
     alignment: Alignment.center,

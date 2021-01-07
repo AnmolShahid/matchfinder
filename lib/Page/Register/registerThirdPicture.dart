@@ -28,6 +28,7 @@ class _RegisterThirdState extends State<RegisterThird> {
   bool inUploading = false;
   bool isFirstImage = true;
   File profileImage;
+   Response response;
   double percentage = 0.0;
 
   @override
@@ -81,10 +82,10 @@ class _RegisterThirdState extends State<RegisterThird> {
                   thickness: 2,
                 ),
               ),
-              roundCircle(
+              roundCirclePresent(
                 '3',
-                white,
-                miniGreyColorStyle,
+               borderColorField,
+                miniWhiteTextStyle,
               ),
               SizedBox(
                 width: 15,
@@ -149,6 +150,7 @@ class _RegisterThirdState extends State<RegisterThird> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                if(profileImage == null && percentage==0.0)
                                 Expanded(
                                   child: Text(
                                     isFirstImage
@@ -158,12 +160,37 @@ class _RegisterThirdState extends State<RegisterThird> {
                                     style: headingBlackStyle,
                                   ),
                                 ),
+                                if(profileImage != null && percentage!=0.0)
+                                Expanded(
+                                                  child:
+                                                      new LinearPercentIndicator(
+                                                    animation: true,
+                                                    lineHeight: 20.0,
+                                                    animationDuration: 200,
+                                                    percent: percentage,
+                                                    center: Text(
+                                                      (percentage+99).toStringAsFixed(1)+"%",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                    linearStrokeCap:
+                                                        LinearStrokeCap
+                                                            .roundAll,
+                                                    progressColor: appColor,
+                                                  ),
+                                                ),
+                                             
                               ],
                             ),
                           ),
                           profileImage != null
                               ? Column(
                                   children: [
+                                    if(profileImage != null && percentage==1.0)
                                     Container(
                                       margin: EdgeInsets.symmetric(
                                         horizontal: 30,
@@ -194,30 +221,7 @@ class _RegisterThirdState extends State<RegisterThird> {
                                             ),
                                             child: Row(
                                               children: [
-                                                Expanded(
-                                                  child:
-                                                      new LinearPercentIndicator(
-                                                    animation: true,
-                                                    lineHeight: 20.0,
-                                                    animationDuration: 200,
-                                                    percent: percentage,
-                                                    center: Text(
-                                                      percentage
-                                                          .toStringAsFixed(1),
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                    linearStrokeCap:
-                                                        LinearStrokeCap
-                                                            .roundAll,
-                                                    progressColor: appColor,
-                                                  ),
-                                                ),
-                                              ],
+                                                ],
                                             ),
                                           )
                                         : Container(),
@@ -244,7 +248,7 @@ class _RegisterThirdState extends State<RegisterThird> {
                                                 horizontal: 40,
                                               ),
                                               child: Text(
-                                                'Upload Image',
+                                                'Update Caption',
                                                 textAlign: TextAlign.center,
                                                 style: miniWhiteTextStyle,
                                               ),
@@ -355,11 +359,15 @@ class _RegisterThirdState extends State<RegisterThird> {
       setState(() {
         profileImage = cropped;
         inProcess = false;
+        
       });
+      response = await   uploadImage(profileImage);
     } else {
-      setState(() {
+      setState(()  {
         inProcess = false;
+     
       });
+      response = await   uploadImage(profileImage);
     }
   }
 
@@ -455,11 +463,11 @@ class _RegisterThirdState extends State<RegisterThird> {
         isLoading = true;
         inUploading = true;
       });
-      Response response = await uploadImage(profileImage);
+   //   Response response = await uploadImage(profileImage);
       if (response.data['photos'] != null) {
         await submitData(UrlLinks.photoCaptionUrl, {
           'photoId': response.data['photos'][0]['photoId'],
-          'caption': '',
+          'caption': caption.text,
         });
         if (isProfile) {
           await submitData(UrlLinks.photoProfileUrl,

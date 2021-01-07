@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:matchfinder/Page/Register/dropDownCateMultiple.dart';
 import 'package:matchfinder/Page/Register/registerThirdPicture.dart';
 import 'package:matchfinder/Utilities/Common.dart';
@@ -9,6 +10,8 @@ import 'package:matchfinder/Utilities/sharedWidget/customDrop.dart';
 import 'package:matchfinder/Utilities/sharedWidget/employedIn.dart';
 import 'package:matchfinder/Utilities/sharedWidget/text_field.dart';
 import 'package:matchfinder/Utilities/style.dart';
+import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
+
 
 class RegisterSecond extends StatefulWidget {
   @override
@@ -28,7 +31,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
   bool isLoading = false;
   bool isMartialStatus = true;
   bool isAnnualIncome = true;
-  bool isHeight = true;
+  bool isHeight = false;
   bool isDisplay = false;
   bool isHighestEducation = true;
 
@@ -115,7 +118,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
               value: value[i][0],
             ),
           );
-      
+
           }else{
                items.insert(
             0,
@@ -125,14 +128,14 @@ class _RegisterSecondState extends State<RegisterSecond> {
                 style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
               ),
               value: value[i][0],
-             
+
             ),
           );
-      
+
           }
          });
       }
-     
+
       return items;
     } else {
       return null;
@@ -171,6 +174,42 @@ class _RegisterSecondState extends State<RegisterSecond> {
     super.initState();
     getData();
   }
+
+YYDialog YYAlertDialogBody() {
+  return 
+  
+  YYDialog().build()
+    ..width = 240
+    ..borderRadius = 4.0
+    ..gravity = Gravity.right
+    ..gravityAnimationEnable = true
+    ..widget(
+       DropDownCasteMultiple(
+                                    keyScaffold: _key,
+                                    onSelect: (value) {
+                                     if (value.isNotEmpty) {
+                                        if (defaultCasteValue.contains(value)) {
+                                          setState(() {
+                                            defaultCasteValue.remove(value);
+                                          });
+                                          print(value);
+                                        } else {
+                                          setState(() {
+                                            defaultCasteValue.add(value);
+                                          });
+                                          print(value);
+                                        }
+                                      }
+                                    },
+                                    defaultValue: defaultCasteValue,
+                                    casteList: casteList,
+                                  ),
+     
+    )
+    ..show(
+       
+    );
+}
 
   getData() async {
     try {
@@ -248,6 +287,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
 
   @override
   Widget build(BuildContext context) {
+    YYDialog.init(context);
     return Scaffold(
       backgroundColor: white,
       key: _key,
@@ -255,16 +295,24 @@ class _RegisterSecondState extends State<RegisterSecond> {
         shadowColor: appColor,
         backgroundColor: appColor,
         automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: white,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        centerTitle: true,
+        // leading: IconButton(
+        //   icon: Icon(
+        //     Icons.arrow_back,
+        //     color: white,
+        //   ),
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
+      //  centerTitle: true,
+      //  ClipPath(
+      //       clipper: TriangleClipper(),
+      //       child: Container(
+      //         color: Colors.white,
+      //         height: 10,
+      //         width: 20,
+      //       ),
+      //     )
         title: Image.asset(
           'assets/logowhite.png',
           // width: 142,
@@ -285,11 +333,15 @@ class _RegisterSecondState extends State<RegisterSecond> {
                   thickness: 2,
                 ),
               ),
-              roundCircle(
+                 roundCirclePresent(
                 '2',
-                white,
-                miniGreyColorStyle,
+                borderColorField,
+                miniWhiteTextStyle,
+
               ),
+
+
+
               Container(
                 width: 10,
                 child: Divider(
@@ -299,8 +351,8 @@ class _RegisterSecondState extends State<RegisterSecond> {
               ),
               roundCircle(
                 '3',
-                borderColorField,
-                miniWhiteTextStyle,
+                white,
+                 miniGreyColorStyle,
               ),
               SizedBox(
                 width: 15,
@@ -436,9 +488,9 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                         isHighestEducation = false;
 
                                        });
-                                
+
                                   }
-                               
+
                               },
                             ),
                             TextFieldCustom(
@@ -464,7 +516,12 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                 ),
                               ],
                             ),
-                            Row(
+                            Column(
+
+                              children: [
+                                SizedBox(height: 10,),
+                                SizedBox(
+                                  child:       Row(
                               children: [
                                 EmployedIn(
                                   value: 'GOV',
@@ -480,7 +537,9 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                 ),
                               ],
                             ),
-                            Row(
+                          height: 25,
+                                ),
+                                SizedBox(child:   Row(
                               children: [
                                 EmployedIn(
                                   value: 'OWN',
@@ -496,7 +555,8 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                 ),
                               ],
                             ),
-                            Row(
+                           height: 25),
+                           SizedBox(child:  Row(
                               children: [
                                 EmployedIn(
                                   value: 'JT',
@@ -512,7 +572,8 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                 ),
                               ],
                             ),
-                            Row(
+                           height: 25,),
+                          SizedBox(child:   Row(
                               children: [
                                 EmployedIn(
                                   value: 'OT',
@@ -522,7 +583,11 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                 ),
                               ],
                             ),
-                            TextFieldCustom(
+
+                         height: 25,),
+                         SizedBox(height: 10,)   ],
+                            ),
+                             TextFieldCustom(
                               controller: occupation,
                               style: miniGreyTextStyle,
                               labelText: 'Occupation:',
@@ -612,12 +677,21 @@ class _RegisterSecondState extends State<RegisterSecond> {
                             ),
                             InkWell(
                               onTap: () {
-                                changeScreen(
-                                  context,
-                                  DropDownCasteMultiple(
+print('de');
+  YYDialog().build()
+    ..width = MediaQuery.of(context).size.width-80
+    ..height = MediaQuery.of(context).size.height
+    
+    ..gravity = Gravity.right
+    ..gravityAnimationEnable = true
+    ..widget(
+      Container(
+        width: MediaQuery.of(context).size.width-80,
+        height: MediaQuery.of(context).size.height,
+        child:  DropDownCasteMultiple(
                                     keyScaffold: _key,
                                     onSelect: (value) {
-                                      if (value.isNotEmpty) {
+                                     if (value.isNotEmpty) {
                                         if (defaultCasteValue.contains(value)) {
                                           setState(() {
                                             defaultCasteValue.remove(value);
@@ -634,17 +708,77 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                     defaultValue: defaultCasteValue,
                                     casteList: casteList,
                                   ),
-                                );
+     )
+    )
+    ..show();
+/*            showDialog(
+                barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return WillPopScope(
+              onWillPop: () {
+                return Future.value(true);
+              },
+              child: Material(
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                 // padding: const EdgeInsets.all(16.0),
+                  width: MediaQuery.of(context).size.width - 100,
+                  height: double.infinity,
+                  child: 
+                    DropDownCasteMultiple(
+                                    keyScaffold: _key,
+                                    onSelect: (value) {
+                                     if (value.isNotEmpty) {
+                                        if (defaultCasteValue.contains(value)) {
+                                          setState(() {
+                                            defaultCasteValue.remove(value);
+                                          });
+                                          print(value);
+                                        } else {
+                                          setState(() {
+                                            defaultCasteValue.add(value);
+                                          });
+                                          print(value);
+                                        }
+                                      }
+                                    },
+                                    defaultValue: defaultCasteValue,
+                                    casteList: casteList,
+                                  ),
+      ),
+              ));
+        },
+      );
+    },
+
+              
+            
+                  );
+*/
                               },
                               child: Column(
                                 children: [
                                   Row(
                                     children: [
-                                      Expanded(
+                                      // Expanded(
+                                      //   child: Text(
+                                      //     'Preferred Caste:',
+                                      //     textAlign: TextAlign.start,
+                                      //     style: miniGreyFontWeightStyle,
+                                      //   ),
+                                      // ),
+                                       Expanded(
                                         child: Text(
-                                          'Preferred Caste:',
-                                          textAlign: TextAlign.start,
-                                          style: miniGreyFontWeightStyle,
+                                          '+ Add more',
+                                          textAlign: TextAlign.end,
+                                          style:  TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: greyTextField,
+                                                    fontSize: 16,
+                                                  ),
                                         ),
                                       ),
                                     ],
@@ -665,8 +799,9 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                         width: 1,
                                       ),
                                     ),
-                                    height: 200,
-                                    child: GridView.builder(
+                                    height: 350,
+                                    child:
+                                           GridView.builder(
                                       itemCount: defaultCasteValue != null
                                           ? defaultCasteValue.length
                                           : 0,
@@ -692,12 +827,15 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                                   BorderRadius.circular(10),
                                             ),
                                             padding: EdgeInsets.symmetric(
-                                              horizontal: 10,
-                                              vertical: 5,
+
+                                              vertical: 2,
                                             ),
                                             child: Stack(
                                               children: [
-                                                Column(
+                                                Container(
+                                                  padding: EdgeInsets.only(left:16,right: 16,top:5,bottom: 5),
+                                                alignment: Alignment.center,
+                                                child:  Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   crossAxisAlignment:
@@ -712,30 +850,49 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                                               .center,
                                                       children: [
                                                         Expanded(
-                                                          child: Text(
+                                                          child:
+                                                           Text(
                                                             defaultCasteValue[
                                                                     index][1]
                                                                 .toString(),
-                                                            maxLines: 2,
+                                                            maxLines:3,
                                                             textAlign: TextAlign
                                                                 .center,
 
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
-                                                            style:
-                                                                miniGreyColorStyle,
+                                                            style:TextStyle(fontSize: 12)
+                                                               ,
                                                           ),
                                                         ),
                                                       ],
                                                     ),
                                                   ],
                                                 ),
-                                                Positioned(
-                                                  top: 0,
-                                                  right: 0,
-                                                  bottom: 50,
-                                                  left: 65,
+                                              ),
+                                                 Align(
+                                                  alignment: Alignment.topRight,
+                                                  child:  Container(
+                                                      // color: red,
+                                                      height: 30,
+                                                      width: 30,
+                                                      child: IconButton(icon: Icon(
+                                                        Icons.clear,
+                                                        size: 12,
+                                                      ),onPressed: (){
+                                                         print('Reach');
+                                                      setState(() {
+                                                        defaultCasteValue.remove(
+                                                            defaultCasteValue[
+                                                                index]);
+                                                      });
+                                                      },)
+                                                    ),
+),
+                                            /*    Positioned(
+                                                  top:0.0,
+                                                  right: 0.0,
                                                   child: InkWell(
                                                     onTap: () {
                                                       print('Reach');
@@ -753,20 +910,29 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                                       // color: red,
                                                       height: 30,
                                                       width: 30,
-                                                      child: Icon(
+                                                      child: IconButton(icon: Icon(
                                                         Icons.clear,
                                                         size: 15,
-                                                      ),
+                                                      ),onPressed: (){
+                                                         print('Reach');
+                                                      setState(() {
+                                                        defaultCasteValue.remove(
+                                                            defaultCasteValue[
+                                                                index]);
+                                                      });
+                                                      },)
                                                     ),
                                                   ),
                                                 ),
-                                              ],
+                                            */  ],
                                             ),
                                           ),
                                         );
                                       },
                                     ),
-                                  ),
+
+
+                                   ),
                                 ],
                               ),
                             ),
@@ -782,6 +948,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                   setState(() {
                                     isDisplay = false;
                                   });
+                                  
                                   if (groupValue == 'GOV' ||
                                       groupValue == 'PVT') {
                                     if (annual.text.isNotEmpty) {
@@ -798,7 +965,15 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                   } else {
                                     uploadData();
                                   }
-                                } else {
+                                } else if(occupation.text == '' || occupation.text == null){
+                                    _key.currentState.showSnackBar(
+                                        snackBar(
+                                          'Occupation is missing',
+                                          Colors.red,
+                                          Icons.verified_user,
+                                        ),
+                                      );
+                                  }else {
                                   _key.currentState.showSnackBar(
                                     snackBar(
                                       'Enter correct information',
@@ -927,4 +1102,17 @@ class _RegisterSecondState extends State<RegisterSecond> {
       isLoading = false;
     });
   }
+}
+class TriangleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.lineTo(size.width / 2, size.height);
+    path.lineTo(size.width, 0.0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(TriangleClipper oldClipper) => false;
 }

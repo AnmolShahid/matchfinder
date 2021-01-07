@@ -47,26 +47,26 @@ class _DropDownCasteMultipleState extends State<DropDownCasteMultiple> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shadowColor: appColor,
-        backgroundColor: appColor,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: white,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        centerTitle: true,
-        title: Image.asset(
-          'assets/logowhite.png',
-          // width: 142,
-          height: 50,
-        ),
-      ),
+      // appBar: AppBar(
+      //   shadowColor: appColor,
+      //   backgroundColor: appColor,
+      //   automaticallyImplyLeading: false,
+      //   leading: IconButton(
+      //     icon: Icon(
+      //       Icons.arrow_back,
+      //       color: white,
+      //     ),
+      //     onPressed: () {
+      //       Navigator.pop(context);
+      //     },
+      //   ),
+      //   centerTitle: true,
+      //   title: Image.asset(
+      //     'assets/logowhite.png',
+      //     // width: 142,
+      //     height: 50,
+      //   ),
+      // ),
       body: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -170,7 +170,7 @@ class _DropDownCasteMultipleState extends State<DropDownCasteMultiple> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(
-                    15,
+                    0,
                   ),
                   color: appColor,
                 ),
