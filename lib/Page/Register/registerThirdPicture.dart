@@ -6,6 +6,7 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker_gallery_camera/image_picker_gallery_camera.dart';
+import 'package:matchfinder/Model/image.dart';
 import 'package:matchfinder/Page/Home/home.dart';
 import 'package:matchfinder/Utilities/Common.dart';
 import 'package:matchfinder/Utilities/Function/function.dart';
@@ -30,6 +31,8 @@ class _RegisterThirdState extends State<RegisterThird> {
   File profileImage;
    Response response;
   double percentage = 0.0;
+  List<Images> imagesList = List<Images>();
+  bool upload=false;
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +163,7 @@ class _RegisterThirdState extends State<RegisterThird> {
                                     style: headingBlackStyle,
                                   ),
                                 ),
-                                if(profileImage != null && percentage!=0.0)
+                                if( percentage!=0.0)
                                 Expanded(
                                                   child:
                                                       new LinearPercentIndicator(
@@ -190,7 +193,7 @@ class _RegisterThirdState extends State<RegisterThird> {
                           profileImage != null
                               ? Column(
                                   children: [
-                                    if(profileImage != null && percentage==1.0)
+                                    if( percentage==1.0)
                                     Container(
                                       margin: EdgeInsets.symmetric(
                                         horizontal: 30,
@@ -202,29 +205,13 @@ class _RegisterThirdState extends State<RegisterThird> {
                                         labelText:
                                             'Say something about this photo...',
                                         inputType: TextInputType.text,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return 'Please enter your caption';
-                                          }
-                                          return null;
-                                        },
+                                       
                                       ),
                                     ),
                                     SizedBox(
                                       height: 5,
                                     ),
-                                    inUploading
-                                        ? Container(
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: 30,
-                                              horizontal: 20,
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                ],
-                                            ),
-                                          )
-                                        : Container(),
+                                    
                                     SizedBox(
                                       height: 30,
                                     ),
@@ -233,9 +220,23 @@ class _RegisterThirdState extends State<RegisterThird> {
                                             child: CircularProgressIndicator())
                                         : MaterialButton(
                                             onPressed: () async {
-                                              isFirstImage
+                                              if(percentage == 0.0){
+                                                 response = await   uploadImage(profileImage);
+                                                
+                                              }else if(caption.text==""||caption.text==null){
+                                                 _key.currentState.showSnackBar(
+                                                          snackBar(
+                                                            'Caption missing',
+                                                            Colors.red,
+                                                            Icons.security,
+                                                          ),
+                                                        );
+                                              }else{
+                                                isFirstImage
                                                   ? uploadImageDataBase(true)
                                                   : uploadImageDataBase(false);
+                                              }
+                                              
                                             },
                                             color: appColor,
                                             shape: RoundedRectangleBorder(
@@ -248,7 +249,11 @@ class _RegisterThirdState extends State<RegisterThird> {
                                                 horizontal: 40,
                                               ),
                                               child: Text(
-                                                'Update Caption',
+                                                percentage == 1.0
+                                                ?
+                                                'Update Caption'
+                                                :
+                                                'Upload Photo',
                                                 textAlign: TextAlign.center,
                                                 style: miniWhiteTextStyle,
                                               ),
@@ -276,8 +281,9 @@ class _RegisterThirdState extends State<RegisterThird> {
                                     ),
                                     MaterialButton(
                                       onPressed: () async {
-                                        changeScreenReplacementUtils(
-                                            context, Home());
+                                    //    changeScreenReplacementUtils(
+                                     //       context, Home());
+                                     print(imagesList[0].caption);
                                       },
                                       color: appColor,
                                       shape: RoundedRectangleBorder(
@@ -296,6 +302,39 @@ class _RegisterThirdState extends State<RegisterThird> {
                                         ),
                                       ),
                                     ),
+                                    
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 150,
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: imagesList.length,
+                                        itemBuilder: (BuildContext context, int index) => Card(
+                                              child: GestureDetector(
+                                                child: Column(children: [
+                                                 for(int index = 0; index < imagesList.length; index++)
+                                                      Image.network(imagesList.elementAt(index).photoUrl,height: 80,width: 80,),
+                                                     Text(imagesList.elementAt(index).caption.toString())
+                                              ],),
+                                              onTap: () async {
+                                                  await submitData(UrlLinks.photoProfileUrl,
+                                                       {'photoId': imagesList.elementAt(index).photoId});
+                                                        _key.currentState.showSnackBar(
+                                                        snackBar(
+                                                          'Updated as profile image',
+                                                          Colors.green,
+                                                          Icons.verified_user,
+                                                        ),
+                                                      );
+                                              }, )
+                                              
+                                              
+                                            ),
+                                      ),
+                                  
+                                    )
+                                   
                                   ],
                                 ),
                         ],
@@ -361,13 +400,13 @@ class _RegisterThirdState extends State<RegisterThird> {
         inProcess = false;
         
       });
-      response = await   uploadImage(profileImage);
+     
     } else {
       setState(()  {
         inProcess = false;
      
       });
-      response = await   uploadImage(profileImage);
+     
     }
   }
 
@@ -467,8 +506,20 @@ class _RegisterThirdState extends State<RegisterThird> {
       if (response.data['photos'] != null) {
         await submitData(UrlLinks.photoCaptionUrl, {
           'photoId': response.data['photos'][0]['photoId'],
-          'caption': caption.text,
+          'comments': caption.text,
+          'caption':caption.text,
         });
+        setState(() {
+          imagesList.add(
+          Images(
+          proId:response.data['photos'][0]['proId'],
+          photoId: response.data['photos'][0]['photoId'],
+          photoUrl: response.data['photos'][0]['url'],
+          profileImage: response.data['photos'][0]['profilePhoto'],
+          caption: response.data['photos'][0]['caption']
+         ));
+        print(imagesList.length);
+       });
         if (isProfile) {
           await submitData(UrlLinks.photoProfileUrl,
               {'photoId': response.data['photos'][0]['photoId']});

@@ -169,12 +169,32 @@ class _RegisterSecondState extends State<RegisterSecond> {
     }
   }
 
+FocusNode focusNodeIncome;
+FocusNode focusNodeOccupation;
+
   @override
   void initState() {
     super.initState();
     getData();
-  }
+     focusNodeIncome = new FocusNode();
+     focusNodeOccupation = new FocusNode();
 
+  // listen to focus changes
+  focusNodeOccupation.addListener(() => print('focusNode updated: hasFocus: ${focusNodeIncome.hasFocus}')); 
+
+  // listen to focus changes
+  focusNodeIncome.addListener(() => print('focusNode updated: hasFocus: ${focusNodeOccupation.hasFocus}')); 
+
+  }
+  void setFocus(focusNode) {
+  FocusScope.of(context).requestFocus(focusNode);
+  }
+@override
+  void dispose() {
+    focusNodeOccupation.dispose();
+    focusNodeIncome.dispose();
+    super.dispose();
+  }
 YYDialog YYAlertDialogBody() {
   return 
   
@@ -284,6 +304,8 @@ YYDialog YYAlertDialogBody() {
       defaultCasteValue.add(casteList);
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -588,6 +610,7 @@ YYDialog YYAlertDialogBody() {
                          SizedBox(height: 10,)   ],
                             ),
                              TextFieldCustom(
+                               focusNode: focusNodeOccupation,
                               controller: occupation,
                               style: miniGreyTextStyle,
                               labelText: 'Occupation:',
@@ -601,6 +624,7 @@ YYDialog YYAlertDialogBody() {
                             ),
                             TextFieldCustom(
                               controller: annual,
+                              focusNode: focusNodeIncome,
                               style: miniGreyTextStyle,
                               labelText: 'Your Annual Income:',
                               suffixIconData: Icons.help_outline,
@@ -681,10 +705,10 @@ print('de');
   YYDialog().build()
     ..width = MediaQuery.of(context).size.width-80
     ..height = MediaQuery.of(context).size.height
-    
     ..gravity = Gravity.right
     ..gravityAnimationEnable = true
     ..widget(
+      
       Container(
         width: MediaQuery.of(context).size.width-80,
         height: MediaQuery.of(context).size.height,
@@ -973,6 +997,16 @@ print('de');
                                           Icons.verified_user,
                                         ),
                                       );
+                                      setFocus(focusNodeOccupation);
+                                  } else if(annual.text == '' || annual.text == null){
+                                    _key.currentState.showSnackBar(
+                                        snackBar(
+                                          'Annual Income is missing',
+                                          Colors.red,
+                                          Icons.verified_user,
+                                        ),
+                                      );
+                                      setFocus(focusNodeIncome);
                                   }else {
                                   _key.currentState.showSnackBar(
                                     snackBar(

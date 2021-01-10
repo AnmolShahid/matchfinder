@@ -68,6 +68,7 @@ class _DropDownCasteMultipleState extends State<DropDownCasteMultiple> {
       //   ),
       // ),
       body: Container(
+        padding: EdgeInsets.only(top:20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(20),
@@ -88,7 +89,59 @@ class _DropDownCasteMultipleState extends State<DropDownCasteMultiple> {
                   sufixIconColor: Colors.black,
                   inputType: TextInputType.text,
                   onChanged: (value) async {
-                    if (value.isNotEmpty) {}
+                    
+                    value.isNotEmpty
+                    ? Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 20,
+                      ),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount:
+                            castString.length == null ? 0 : castString.length,
+                        itemBuilder: (context, index) {
+                          return new CheckboxListTile(
+                            title: new Text(castString[index][1]),
+                            value: widget.defaultValue != null
+                                ? widget.defaultValue
+                                    .contains(widget.casteList[index])
+                                : false,
+                            onChanged: (bool isCheck) {
+                              if (isCheck) {
+                                addToFunction(widget.casteList[index]);
+                              } else {
+                                addToFunction(widget.casteList[index]);
+                              }
+                            },
+                          );
+                        },
+                      ),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: widget.casteList.length == null
+                          ? 0
+                          : widget.casteList.length,
+                      itemBuilder: (context, index) {
+                        return new CheckboxListTile(
+                          title: new Text(widget.casteList[index][1]),
+                          value: widget.defaultValue != null
+                              ? widget.defaultValue
+                                  .contains(widget.casteList[index])
+                              : false,
+                          onChanged: (bool isCheck) {
+                            if (isCheck) {
+                              addToFunction(widget.casteList[index]);
+                            } else {
+                              addToFunction(widget.casteList[index]);
+                            }
+                          },
+                        );
+                      },
+                    );
+           
                   },
                   validator: (value) {
                     if (value.isEmpty) {
