@@ -26,7 +26,7 @@ class _RegisterState extends State<Register> {
   TextEditingController name = TextEditingController();
   TextEditingController castTextController = TextEditingController();
   TextEditingController cityController = TextEditingController();
-  String gender = "male";
+
   String groupValue = "male";
   bool isChristian = false;
 
@@ -1018,7 +1018,8 @@ class _RegisterState extends State<Register> {
         isLoading = false;
       });
       if (response.data['reqstatus'] == 'success') {
-        _key.currentState
+        changeScreen(context, RegisterSecond());
+      /*  _key.currentState
             .showSnackBar(
               snackBar(
                 'User Registered',
@@ -1028,6 +1029,7 @@ class _RegisterState extends State<Register> {
             )
             .closed
             .then((value) => changeScreen(context, RegisterSecond()));
+      */
       } else {
         setState(() {
           isDisplay = true;

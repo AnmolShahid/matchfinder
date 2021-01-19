@@ -34,6 +34,8 @@ class _RegisterThirdState extends State<RegisterThird> {
   List<Images> imagesList = List<Images>();
   bool upload=false;
 
+  String buttonText='Upload atleast one photo';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,8 +89,8 @@ class _RegisterThirdState extends State<RegisterThird> {
               ),
               roundCirclePresent(
                 '3',
-               borderColorField,
-                miniWhiteTextStyle,
+               white,
+                miniGreyColorStyle,
               ),
               SizedBox(
                 width: 15,
@@ -136,7 +138,99 @@ class _RegisterThirdState extends State<RegisterThird> {
                               height: 100,
                               width: 100,
                             )
-                          : Container(),
+                          :    Container(
+                                     
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 150,
+                                      child: Stack(
+                                      children: <Widget>[
+                                     Container(
+                                       padding: EdgeInsets.only(top:50,left: 20,right:20,bottom: 20),
+                                       child:    ListView.builder(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: imagesList.length,
+                                        padding: EdgeInsets.only(left:5,right: 5),
+
+                                        itemBuilder: (BuildContext context, int index) =>  GestureDetector(
+                                                child: Column(children: [
+
+                                                
+                                                  Stack(
+                                                    overflow: Overflow.visible,
+                                                    children: [
+                                                        imagesList.elementAt(index).profileImage=="Y"?Text('Profile Image'):Text(''),
+                                                      Image.network(imagesList.elementAt(index).photoUrl,height: 150,width: 150,fit: BoxFit.fill,),
+                                                    
+                                                     Positioned(
+                                                      top: 5,
+                                                      right: 10,
+                                                      child: GestureDetector(
+                                                          onTap: () async {
+                                                            await submitData(UrlLinks.photoProfileUrl,
+                                                                                                      {'photoId': imagesList.elementAt(index).photoId});
+                                                                                                        _key.currentState.showSnackBar(
+                                                                                                        snackBar(
+                                                                                                          'Updated as profile image',
+                                                                                                          Colors.green,
+                                                                                                          Icons.verified_user,
+                                                                                                        ),
+                                                                                                      );
+                                                          },
+                                                          child: Icon(
+                                                         imagesList.elementAt(index).profileImage=="Y"
+                                                         ?
+                                                         Icons.check_circle 
+                                                         :
+                                                          Icons.select_all_outlined,
+                                                          color:Colors.green
+                                                      ),
+                                                    ),
+                                                    ),
+  
+                                                    
+                                                  ]),
+                                                  Text(imagesList.elementAt(index).caption.toString())
+                                              ],),
+                                              onTap: () async {
+                                                  await submitData(UrlLinks.photoProfileUrl,
+                                                       {'photoId': imagesList.elementAt(index).photoId});
+                                                        _key.currentState.showSnackBar(
+                                                        snackBar(
+                                                          'Updated as profile image',
+                                                          Colors.green,
+                                                          Icons.verified_user,
+                                                        ),
+                                                      );
+                                              }, )
+                                             
+                                              
+                                              
+                                              
+                                            ),
+                                     ), 
+                                      imagesList.length!=0||imagesList.length!=null?
+                                      Positioned(
+                                        top:5,
+                                        left: 0,
+                                        right: 0,
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          child: Center(
+                                            child:Text(
+                                              'Select one of them as a profile picture.'
+                                              ),
+                                          )
+                                        ),)
+                                      :Container(),
+                                     
+  ],
+)
+                                      
+                                      ),
+                                  
+                                    
+                                 
                     ),
                     Container(
                       margin: EdgeInsets.only(
@@ -193,7 +287,7 @@ class _RegisterThirdState extends State<RegisterThird> {
                           profileImage != null
                               ? Column(
                                   children: [
-                                    if( percentage==1.0)
+                                    //if( percentage==1.0)
                                     Container(
                                       margin: EdgeInsets.symmetric(
                                         horizontal: 30,
@@ -222,8 +316,10 @@ class _RegisterThirdState extends State<RegisterThird> {
                                             onPressed: () async {
                                               if(percentage == 0.0){
                                                  response = await   uploadImage(profileImage);
-                                                
-                                              }else if(caption.text==""||caption.text==null){
+                                                 isFirstImage
+                                                  ? uploadImageDataBase(true)
+                                                  : uploadImageDataBase(false);
+                                             /* }else if(caption.text==""||caption.text==null){
                                                  _key.currentState.showSnackBar(
                                                           snackBar(
                                                             'Caption missing',
@@ -231,10 +327,7 @@ class _RegisterThirdState extends State<RegisterThird> {
                                                             Icons.security,
                                                           ),
                                                         );
-                                              }else{
-                                                isFirstImage
-                                                  ? uploadImageDataBase(true)
-                                                  : uploadImageDataBase(false);
+                                             */
                                               }
                                               
                                             },
@@ -279,11 +372,38 @@ class _RegisterThirdState extends State<RegisterThird> {
                                     SizedBox(
                                       height: 55,
                                     ),
-                                    MaterialButton(
+                                     gender=="female"?MaterialButton(
                                       onPressed: () async {
-                                    //    changeScreenReplacementUtils(
-                                     //       context, Home());
-                                     print(imagesList[0].caption);
+                                        if(imagesList.length!=null||imagesList.length!=0){
+                                          changeScreenReplacementUtils(
+                                            context, Home());
+                                        }else{
+
+                                        }
+                                        
+                                   //  print(imagesList[0].caption);
+                                      },
+                                      color: appColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(23.0),
+                                      ),
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 14,
+                                          horizontal: 40,
+                                        ),
+                                        child: Text(
+                                          buttonText,
+                                          textAlign: TextAlign.center,
+                                          style: miniWhiteTextStyle,
+                                        ),
+                                      ),
+                                    ):MaterialButton(
+                                      onPressed: () async {
+                                        changeScreenReplacementUtils(
+                                            context, Home());
+                                   //  print(imagesList[0].caption);
                                       },
                                       color: appColor,
                                       shape: RoundedRectangleBorder(
@@ -302,38 +422,9 @@ class _RegisterThirdState extends State<RegisterThird> {
                                         ),
                                       ),
                                     ),
-                                    
-                                    Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 150,
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: imagesList.length,
-                                        itemBuilder: (BuildContext context, int index) => Card(
-                                              child: GestureDetector(
-                                                child: Column(children: [
-                                                 for(int index = 0; index < imagesList.length; index++)
-                                                      Image.network(imagesList.elementAt(index).photoUrl,height: 80,width: 80,),
-                                                     Text(imagesList.elementAt(index).caption.toString())
-                                              ],),
-                                              onTap: () async {
-                                                  await submitData(UrlLinks.photoProfileUrl,
-                                                       {'photoId': imagesList.elementAt(index).photoId});
-                                                        _key.currentState.showSnackBar(
-                                                        snackBar(
-                                                          'Updated as profile image',
-                                                          Colors.green,
-                                                          Icons.verified_user,
-                                                        ),
-                                                      );
-                                              }, )
-                                              
-                                              
-                                            ),
-                                      ),
-                                  
-                                    )
+                                    gender=="male"?FlatButton(onPressed: (){
+
+                                    }, child: Text('Skip')):Container(child: Text('Upload atleast one photo'),),
                                    
                                   ],
                                 ),
@@ -434,12 +525,17 @@ class _RegisterThirdState extends State<RegisterThird> {
       compressQuality: 100,
       maxWidth: 700,
       maxHeight: 700,
+
       compressFormat: ImageCompressFormat.jpg,
       iosUiSettings: IOSUiSettings(
-        title: Common.appName + ' Cropper',
+        title: 'Crop Your Image',
       ),
       androidUiSettings: AndroidUiSettings(
-        toolbarTitle: Common.appName + ' Cropper',
+        toolbarTitle:'Crop Your Image',
+        toolbarColor: appColor,
+        toolbarWidgetColor: Colors.white,
+        initAspectRatio: CropAspectRatioPreset.original,
+        lockAspectRatio: false
       ),
     );
   }
@@ -516,8 +612,9 @@ class _RegisterThirdState extends State<RegisterThird> {
           photoId: response.data['photos'][0]['photoId'],
           photoUrl: response.data['photos'][0]['url'],
           profileImage: response.data['photos'][0]['profilePhoto'],
-          caption: response.data['photos'][0]['caption']
+          caption: caption.text,
          ));
+         buttonText = 'Complete Registration';
         print(imagesList.length);
        });
         if (isProfile) {

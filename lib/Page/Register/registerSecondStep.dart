@@ -30,10 +30,10 @@ class _RegisterSecondState extends State<RegisterSecond> {
 
   bool isLoading = false;
   bool isMartialStatus = true;
-  bool isAnnualIncome = true;
+  bool isAnnualIncome = false;
   bool isHeight = false;
   bool isDisplay = false;
-  bool isHighestEducation = true;
+  bool isHighestEducation = false;
 
   String martialStatus;
   String annualIncome;
@@ -49,6 +49,8 @@ class _RegisterSecondState extends State<RegisterSecond> {
       <DropdownMenuItem<String>>[];
   List<DropdownMenuItem<String>> annualIncomeDropDown =
       <DropdownMenuItem<String>>[];
+
+  String textAnnual = 'Your Annual Income ';
 
   getMartialStatusDropDown(param0, String martial) async {
     List<dynamic> res = await param0;
@@ -357,8 +359,8 @@ YYDialog YYAlertDialogBody() {
               ),
                  roundCirclePresent(
                 '2',
-                borderColorField,
-                miniWhiteTextStyle,
+                white,miniGreyColorStyle,
+               
 
               ),
 
@@ -373,8 +375,8 @@ YYDialog YYAlertDialogBody() {
               ),
               roundCircle(
                 '3',
-                white,
-                 miniGreyColorStyle,
+                borderColorField,
+                  miniWhiteTextStyle,
               ),
               SizedBox(
                 width: 15,
@@ -454,7 +456,7 @@ YYDialog YYAlertDialogBody() {
                               height: 15,
                             ),
                             CustomDropDown(
-                              heading: 'Marital Status',
+                              heading: 'Marital Status *',
                               hint: '',
                               value: martialStatus,
                               items: martialStatusDropDown,
@@ -613,7 +615,7 @@ YYDialog YYAlertDialogBody() {
                                focusNode: focusNodeOccupation,
                               controller: occupation,
                               style: miniGreyTextStyle,
-                              labelText: 'Occupation:',
+                              labelText: 'Occupation *',
                               inputType: TextInputType.text,
                               validator: (value) {
                                 if (value.isEmpty) {
@@ -626,7 +628,7 @@ YYDialog YYAlertDialogBody() {
                               controller: annual,
                               focusNode: focusNodeIncome,
                               style: miniGreyTextStyle,
-                              labelText: 'Your Annual Income:',
+                              labelText: textAnnual,
                               suffixIconData: Icons.help_outline,
                               sufixIconColor: borderColorField,
                               onTapSuffixIcon: () {
@@ -965,10 +967,7 @@ print('de');
                             ),
                             MaterialButton(
                               onPressed: () async {
-                                if (groupValue != null &&
-                                    !isHeight &&
-                                    !isHighestEducation &&
-                                    occupation.text.isNotEmpty) {
+                                if ( occupation.text.isNotEmpty) {
                                   setState(() {
                                     isDisplay = false;
                                   });
@@ -985,11 +984,13 @@ print('de');
                                           Icons.verified_user,
                                         ),
                                       );
+                                       setFocus(focusNodeIncome);
                                     }
                                   } else {
                                     uploadData();
                                   }
-                                } else if(occupation.text == '' || occupation.text == null){
+                                } else 
+                                if(occupation.text == '' || occupation.text == null){
                                     _key.currentState.showSnackBar(
                                         snackBar(
                                           'Occupation is missing',
@@ -998,27 +999,13 @@ print('de');
                                         ),
                                       );
                                       setFocus(focusNodeOccupation);
-                                  } else if(annual.text == '' || annual.text == null){
-                                    _key.currentState.showSnackBar(
-                                        snackBar(
-                                          'Annual Income is missing',
-                                          Colors.red,
-                                          Icons.verified_user,
-                                        ),
-                                      );
-                                      setFocus(focusNodeIncome);
-                                  }else {
-                                  _key.currentState.showSnackBar(
-                                    snackBar(
-                                      'Enter correct information',
-                                      Colors.red,
-                                      Icons.verified_user,
-                                    ),
-                                  );
+                                 
                                   setState(() {
                                     isDisplay = true;
                                   });
-                                }
+                                } else {
+                                    uploadData();
+                                  }
                               },
                               color: appColor,
                               shape: RoundedRectangleBorder(
@@ -1070,18 +1057,27 @@ print('de');
     setState(() {
       if (e == "GOV") {
         groupValue = e;
+        isAnnualIncome = true;
+        textAnnual = 'Your Annual Income *';
       } else if (e == "PVT") {
         groupValue = e;
+        isAnnualIncome = true;
+        textAnnual = 'Your Annual Income *';
       } else if (e == "OWN") {
         groupValue = e;
+        textAnnual = 'Your Annual Income';
       } else if (e == "NW") {
         groupValue = e;
+        textAnnual = 'Your Annual Income';
       } else if (e == "JT") {
         groupValue = e;
+        textAnnual = 'Your Annual Income';
       } else if (e == "SP") {
         groupValue = e;
+        textAnnual = 'Your Annual Income';
       } else if (e == "OT") {
         groupValue = e;
+        textAnnual = 'Your Annual Income';
       }
     });
   }
@@ -1122,7 +1118,7 @@ print('de');
       'salarypd': annual.text.trim(),
       'currencypd': annualIncome
     });
-    _key.currentState
+    /*_key.currentState
         .showSnackBar(
           snackBar(
             'Data uploaded',
@@ -1132,9 +1128,11 @@ print('de');
         )
         .closed
         .then((value) => changeScreen(context, RegisterThird()));
+    */
     setState(() {
       isLoading = false;
     });
+    changeScreen(context, RegisterThird());
   }
 }
 class TriangleClipper extends CustomClipper<Path> {

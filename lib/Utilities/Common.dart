@@ -126,7 +126,8 @@ class HexColor extends Color {
 }
 
 class Common {
-  static final String appName = 'Match Finder';
+  static final String appName = 'Matchfinder';
   static final String cardTypeVisa = 'visa';
   static final String cardTypeMaster = 'master';
 }
+  String gender = "male";
