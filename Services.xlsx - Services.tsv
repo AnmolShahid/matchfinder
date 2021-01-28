@@ -1,0 +1,33 @@
+Function	Request	query params	Response	Sample responses	Comments
+Login	https://www.matchfinder.in/matrimony/mars/reg/loginsubmit.mob	username=test_india&password=123456	Json	{"validationerrors":"Invalid User Name and Password"} {"action":"profile/dashboard.mob"} 	
+Reset	https://www.matchfinder.in/matrimony/profile/mailPassword.mob	marsid=lovvlykate@gmail.com	Json	{"message":"<!--error-->Invalid Email Id"} {"message":"Login details sent to your Email Id"}	
+Registration	https://www.matchfinder.in/matrimony/mars/reg/regbasicdetsubmit.mob	emailbd:sample pwordbd:ssds firstnamebd:sds genderbd:M daybd:4 monthbd:8 yearbd:1947 mothertonguebd:56 religionbd:61 castenamebd:sddsd countrybd:IN profilecreatorbd:SELF phoneisdbd:91 phonenobd:8834343343	Json	{"regerrors":"5@Please select Mothertongue 9@Please enter your Phone No 8@Please select your relationship with Profile 2@Please enter First Name 6@Please select Religion 1@Password must between 4 to 20 characters 5@Please enter complete Date Of Birth  "} {"action":"profile/dashboard.mob"} 	
+Dropdown					
+Country dropdown	https://www.matchfinder.in/matrimony/mars/common/getcountry.mob		Json		
+ISD dropdown	https://www.matchfinder.in/matrimony/mars/common/getphoneisdbd.mob		Json		
+Mothertongue dropdown	https://www.matchfinder.in/matrimony/mars/common/getmothertonguebd.mob		Json		
+If Christian Religion is selected	https://www.matchfinder.in/mars/common/getsystemcodes.mob	type=CHURCH	Json		
+Relationship	https://www.matchfinder.in/mars/common/getsystemcodes.mob	type=PROFILE_CREATOR	Json	{"code":[["SELF","Self"],["PAR","Parents"],["SIB","Siblings"],["REL","Relatives"],["FRN","Friends"]]}	
+Caste	https://www.matchfinder.in/autocompletecaste.mob	q=kon	Json	{"casteList":["Kandara / Kondara","Kongu Vellalar","Kongu Paraiyar/Parayar","Kongu Chettiar","Kongu Kulalar","Kongu Nadar","Konar","Kongu","Kongu Vettuva Gounder","Konda Vetagandlu","Khond / Kond","Konda Reddy","Konda Kapu","Konda Kammara","Kongu Vaishnava","Kongu Vellala Gounder","Kongadi","Konda Dora","Nani Konda Reddy","Galada Konkani","Kongu Navithar","Kongu Peravai","Kongu Nattu Gounder","Kongu Maruthuvar","Kondeti Balija","Konaseema Brahmin"]}	This is a suggestion list. Please make changes accordingly
+City	https://www.matchfinder.in/autocompletecity.mob	q=gun	Json	{"cityList":["Guna","Guntakal","Guntur","Ramagundam"]}	This is a suggestion list. Please make changes accordingly
+Religion	https://www.matchfinder.in/mars/common/getreligion.mob				
+Day,Month,Year	https://www.matchfinder.in/mars/common/getsystemcodes.mob	type=DAY, type=YEAR, type=MONTH	Json		
+Registration- Step 2 - Loading					
+Full Caste List	https://www.matchfinder.in/mars/common/getcastelist.mob		Json	{"casteList":[["1900","24 Manai Telugu Chettiar (24MTC)"]...["2296","Zou"]]}	You can cache this data in the app. The caste list is big
+You need to pass the session id from here onwards for every request.					
+All other fields	https://www.matchfinder.in/matrimony/profile/ed/editprobasicdetails.mob		Json	{"maritalStatusCode":[["S","Single"]...["W","Widowed"]], "profileMaritalStatus":"S", "heightCode":[["124.0","4 Ft 1 In"]...["243.0","8 Ft"]], "degreeCode":[["BX","Below 10th class","N"]...["OTH","Others","N"]], "employedInCode":[["GOV","Government job"]...["OT","Others"]], "currenciesList":[["AFN","Afghani","Ø‹"]...["ZMK","Zambian Kwacha","ZK"]], "defaultCurrency":"INR", "profileCastes":"1306,1353,999991"}	In degreeCode, the third vaue indicates it is a optgroup or not.
+Registration- Step 2 - Save Fields					
+Marital Status	https://www.matchfinder.in/matrimony/profile/ed/probasicdetregsubmit.mob	marstatusbd=		{"status":"success"}	
+Height	https://www.matchfinder.in/matrimony/profile/ed/personaldetregsubmit.mob	heightfeetpd=		{"status":"success"}	
+Highest Education Any Other Degrees Employed In Occupation Salary Currency	https://www.matchfinder.in/matrimony/profile/ed/eduemplsubmit.mob	highdeged= spedeged= emplinpd= speoccued= salarypd= currencypd=		{"status":"success"}	
+My preferred castes	https://www.matchfinder.in/matrimony/mars/common/savefield.mob	caste=		{"status":"success"}	
+Registration - Step 3 - Photo add					
+Add photos	https://www.matchfinder.in/matrimony/profile/ed/uploadpho.mob	Upload files of this type gif,jpg,jpeg,png,tif Max File size 10,000,000 (10 MB) 		Map of all photos	Capture photoid,proId,thumbnail URL from the response of all photos. Use thumbnail URL to display photos.
+Update Photo Caption	https://www.matchfinder.in/matrimony/profile/ed/updateprocaption.mob	photoid= caption=	json	{"status":"success"}	
+Make profile photo	https://www.matchfinder.in/matrimony/profile/ed/makeprofilephoto.mob	photoid=		Map of all photos	
+Delete Photo	https://www.matchfinder.in/matrimony/profile/ed/deletephoto.mob	photoid=		Map of all photos	
+Registration - Step 4 - Loading					
+Loading photos, Plans	https://www.matchfinder.in/matrimony/sub/renmem.mob		json	result        […] plans        […] defaultplan        36 resultcount        20	
+Clicking "Continue" or checkboxes	https://www.matchfinder.in/matrimony/sub/addoncartnew.mob	addonno=	json	totalcartprice 1500 plans […] cartcurrency "Rs."	
+Uncheck addons	https://www.matchfinder.in/matrimony/sub/addoncartnew.mob	addonno= del=yes		totalcartprice 1500 plans […] cartcurrency "Rs."	
+Clicking Proceed	https://www.matchfinder.in/matrimony/sub/checkoutaddoncart.mob				

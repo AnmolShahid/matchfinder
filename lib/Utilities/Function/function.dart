@@ -190,11 +190,40 @@ getCaste() async {
   return response;
 }
 
+getPaymentPackages() async {
+  final getAppraisalsKey = UrlLinks.addons;
+  Dio dio = Dio();
+  var cookieJar = CookieJar();
+  dio.interceptors.add(CookieManager(cookieJar));
+  Response response = await dio.post(getAppraisalsKey);
+  print(response.data);
+  return response;
+}
+
+getPlans() async {
+  final getAppraisalsKey = UrlLinks.plans;
+  Dio dio = Dio();
+  var cookieJar = CookieJar();
+  dio.interceptors.add(CookieManager(cookieJar));
+  Response response = await dio.post(getAppraisalsKey);
+  print(response.data);
+  return response;
+}
+
 submitData(String link, query) async {
   Dio dio = Dio();
   var cookieJar = CookieJar();
   dio.interceptors.add(CookieManager(cookieJar));
   Response response = await dio.post(link, queryParameters: query);
+ print(response);
+  return response;
+}
+checkoutData(String link) async {
+  Dio dio = Dio();
+  var cookieJar = CookieJar();
+  dio.interceptors.add(CookieManager(cookieJar));
+  Response response = await dio.post(link);
+ print(response);
   return response;
 }
 

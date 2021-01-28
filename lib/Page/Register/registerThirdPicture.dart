@@ -8,6 +8,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker_gallery_camera/image_picker_gallery_camera.dart';
 import 'package:matchfinder/Model/image.dart';
 import 'package:matchfinder/Page/Home/home.dart';
+import 'package:matchfinder/Page/Payment/upgradePayment.dart';
 import 'package:matchfinder/Utilities/Common.dart';
 import 'package:matchfinder/Utilities/Function/function.dart';
 import 'package:matchfinder/Utilities/Function/url.dart';
@@ -147,7 +148,7 @@ class _RegisterThirdState extends State<RegisterThird> {
                                      Container(
                                        padding: EdgeInsets.only(top:50,left: 20,right:20,bottom: 20),
                                        child:    ListView.builder(
-                                        shrinkWrap: true,
+                                      //  shrinkWrap: true,
                                         scrollDirection: Axis.horizontal,
                                         itemCount: imagesList.length,
                                         padding: EdgeInsets.only(left:5,right: 5),
@@ -159,7 +160,6 @@ class _RegisterThirdState extends State<RegisterThird> {
                                                   Stack(
                                                     overflow: Overflow.visible,
                                                     children: [
-                                                        imagesList.elementAt(index).profileImage=="Y"?Text('Profile Image'):Text(''),
                                                       Image.network(imagesList.elementAt(index).photoUrl,height: 150,width: 150,fit: BoxFit.fill,),
                                                     
                                                      Positioned(
@@ -169,13 +169,15 @@ class _RegisterThirdState extends State<RegisterThird> {
                                                           onTap: () async {
                                                             await submitData(UrlLinks.photoProfileUrl,
                                                                                                       {'photoId': imagesList.elementAt(index).photoId});
-                                                                                                        _key.currentState.showSnackBar(
-                                                                                                        snackBar(
-                                                                                                          'Updated as profile image',
-                                                                                                          Colors.green,
-                                                                                                          Icons.verified_user,
-                                                                                                        ),
-                                                                                                      );
+                                                                                                        setState(() {
+                                                     _key.currentState.showSnackBar(
+                                                        snackBar(
+                                                          'Updated as profile image',
+                                                          Colors.green,
+                                                          Icons.verified_user,
+                                                        ),
+                                                      );
+                                                 });
                                                           },
                                                           child: Icon(
                                                          imagesList.elementAt(index).profileImage=="Y"
@@ -195,13 +197,16 @@ class _RegisterThirdState extends State<RegisterThird> {
                                               onTap: () async {
                                                   await submitData(UrlLinks.photoProfileUrl,
                                                        {'photoId': imagesList.elementAt(index).photoId});
-                                                        _key.currentState.showSnackBar(
+                                                     
+                                                 setState(() {
+                                                     _key.currentState.showSnackBar(
                                                         snackBar(
                                                           'Updated as profile image',
                                                           Colors.green,
                                                           Icons.verified_user,
                                                         ),
                                                       );
+                                                 });
                                               }, )
                                              
                                               
@@ -209,7 +214,7 @@ class _RegisterThirdState extends State<RegisterThird> {
                                               
                                             ),
                                      ), 
-                                      imagesList.length!=0||imagesList.length!=null?
+                                      imagesList.length!=0?
                                       Positioned(
                                         top:5,
                                         left: 0,
@@ -374,11 +379,17 @@ class _RegisterThirdState extends State<RegisterThird> {
                                     ),
                                      gender=="female"?MaterialButton(
                                       onPressed: () async {
-                                        if(imagesList.length!=null||imagesList.length!=0){
+                                        if(imagesList.length!=0){
                                           changeScreenReplacementUtils(
                                             context, Home());
                                         }else{
-
+                                          _key.currentState.showSnackBar(
+                                        snackBar(
+                                          'Upload atleast one photo',
+                                          Colors.red,
+                                          Icons.error,
+                                        ),
+                                      );
                                         }
                                         
                                    //  print(imagesList[0].caption);
@@ -399,10 +410,11 @@ class _RegisterThirdState extends State<RegisterThird> {
                                           style: miniWhiteTextStyle,
                                         ),
                                       ),
-                                    ):MaterialButton(
+                                    ):
+                                    MaterialButton(
                                       onPressed: () async {
                                         changeScreenReplacementUtils(
-                                            context, Home());
+                                            context, UpgradePayment());
                                    //  print(imagesList[0].caption);
                                       },
                                       color: appColor,
@@ -423,8 +435,9 @@ class _RegisterThirdState extends State<RegisterThird> {
                                       ),
                                     ),
                                     gender=="male"?FlatButton(onPressed: (){
-
-                                    }, child: Text('Skip')):Container(child: Text('Upload atleast one photo'),),
+                                       changeScreenReplacementUtils(
+                                            context, UpgradePayment());
+                                    }, child: Text('Add Photo Later')):Container(child: Text(''),),
                                    
                                   ],
                                 ),

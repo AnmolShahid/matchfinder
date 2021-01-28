@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:matchfinder/Page/Home/home.dart';
+import 'package:matchfinder/Page/Payment/upgradePayment.dart';
 import 'package:matchfinder/Page/Register/accountNotAccess.dart';
 import 'package:matchfinder/Page/Register/register.dart';
 import 'package:matchfinder/Utilities/Common.dart';
@@ -147,7 +148,7 @@ class _LoginState extends State<Login> {
                                   )
                                   .closed
                                   .then(
-                                      (value) => changeScreen(context, Home()));
+                                      (value) => changeScreen(context, UpgradePayment()));
                             } else {
                               _key.currentState.showSnackBar(
                                 snackBar(

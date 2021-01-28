@@ -28,4 +28,11 @@ class UrlLinks{
   static final String submitMaritalStatus = 'https://www.matchfinder.in/matrimony/profile/ed/probasicdetregsubmit.mob';
   static final String submitHeight = 'https://www.matchfinder.in/matrimony/profile/ed/personaldetregsubmit.mob';
   static final String submitCaste = 'https://www.matchfinder.in/matrimony/mars/common/savefield.mob';
+
+  //Payment step 4
+  static final String plans = 'https://www.matchfinder.in/matrimony/sub/renmem.mob';
+  static final String addons = 'https://www.matchfinder.in/matrimony/sub/addoncartnew.mob';
+  static final String checkout = 'https://www.matchfinder.in/matrimony/sub/checkoutaddoncart.mob';
+
+    static final String test = 'http://213.155.106.18/jexpo/wsgateway.aspx?act=login&phonenumber=905327179073&UniqueId=394239402309439320940932';
 }
